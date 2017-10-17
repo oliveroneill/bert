@@ -11,7 +11,7 @@ createDirectory(logDir);
 // start `script`
 var spawn = require('child_process').spawn;
 // we won't intercept the output to avoid causing user disruption
-spawn('script', ['-F', logDir + generateNewLogName()], { stdio: 'inherit' });
+spawn('script', ['-q', '-F', logDir + generateNewLogName()], { stdio: 'inherit' });
 
 // generate new log to avoid name conflicts
 function generateNewLogName() {
