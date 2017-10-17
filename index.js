@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+"use strict";
+
 console.log("Starting bert. Type 'exit' when you're done.")
 // TODO: run file watcher
 
