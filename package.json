@@ -1,0 +1,25 @@
+{
+  "name": "bert",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "bert": "./index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oliveroneill/bert.git"
+  },
+  "author": "Oliver O'Neill and Tally Tarik",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/oliveroneill/bert/issues"
+  },
+  "homepage": "https://github.com/oliveroneill/bert#readme",
+  "dependencies": {
+    "node-notifier": "^5.1.2"
+  }
+}
