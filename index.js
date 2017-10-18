@@ -1,43 +1,23 @@
 #!/usr/bin/env node
 "use strict";
+
 // imports
-const fs = require('fs');
-const path = require('path');
+const fileUtils = require('./file-utils');
 const spawn = require('child_process').spawn;
-
-// generate new log to avoid name conflicts
-function generateNewLogName() {
-  // TODO: check directory and add increment for each new session
-  return 'log';
-}
-
-function createDirectory(dir) {
-  if (!fs.existsSync(dir)){
-    fs.mkdirSync(dir);
-  }
-}
-
-// resolve ~ as the user's home directory
-function resolveHome(filepath) {
-  if (filepath[0] === '~') {
-    return path.join(process.env.HOME, filepath.slice(1));
-  }
-  return filepath;
-}
 
 function main() {
   console.log("Starting bert. Type 'exit' when you're done.");
   // TODO: run file watcher
 
   // TODO: add command line option to specify logs location
-  let logDir = resolveHome('~/.bert/');
-
-  // create the log directory if it doesn't already exist
-  createDirectory(logDir);
+  let logDir = fileUtils.resolveHome('~/.bert/');
+  let logPath = fileUtils.generateNewLogFile(logDir);
 
   // start `script`
   // we won't intercept the output to avoid causing user disruption
-  spawn('script', ['-q', '-F', logDir + generateNewLogName()], { stdio: 'inherit' });
+  spawn('script', ['-q', '-F', logPath], { stdio: 'inherit' });
+
+  // TODO: wait for `script` exit and clean up log file
 }
 
 if (require.main === module) {
