@@ -27,16 +27,21 @@ class FileUtils {
   }
 
   // resolve ~ as the user's home directory
-  static resolveHome(filepath) {
-    if (filepath[0] === '~') {
-      return path.join(process.env.HOME, filepath.slice(1));
+  static resolveHome(filePath) {
+    if (filePath[0] === '~') {
+      return path.join(process.env.HOME, filePath.slice(1));
     }
-    return filepath;
+    return filePath;
   }
 
   // cleanup and delete file
-  static deleteFile(filepath) {
-    fs.unlinkSync(filepath);
+  static deleteFile(filePath) {
+    fs.unlinkSync(filePath);
+  }
+
+  // returns path to parent directory
+  static getContainingDirectory(filePath) {
+    return path.dirname(filePath);
   }
 }
 

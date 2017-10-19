@@ -20,13 +20,18 @@ const argv = require('yargs')
     .argv
 
 const fileUtils = require('./file-utils');
+const FileWatcher = require('./file-watcher');
 
 function main() {
   console.log("Starting bert. Type 'exit' when you're done.");
-  // TODO: run file watcher
 
   let logDir = fileUtils.resolveHome(argv.dir);
   let logPath = fileUtils.generateNewLogFile(logDir);
+
+  let watcher = new FileWatcher();
+  watcher.watch(logPath, function(line) {
+    // TODO: parse line here
+  });
 
   // start `script`
   // we won't intercept the output to avoid causing user disruption
@@ -34,6 +39,7 @@ function main() {
 
   // cleanup here
   script.on('close', (code) => {
+    watcher.cleanup();
     fileUtils.deleteFile(logPath);
   });
 }
