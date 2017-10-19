@@ -13,6 +13,8 @@ function createDirectory(dir) {
 class FileUtils {
   // generate new log to avoid name conflicts
   static generateNewLogFile(dir) {
+    // ensure it ends with a trailing slash
+    if (!dir.endsWith("/")) dir += "/";
     // create the log directory if it doesn't already exist
     createDirectory(dir);
     var index = 1;

@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/oliveroneill/bert#readme",
   "dependencies": {
-    "node-notifier": "5.1.2"
+    "node-notifier": "5.1.2",
+    "yargs": "9.0.1"
   }
 }
