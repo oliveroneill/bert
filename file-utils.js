@@ -33,6 +33,11 @@ class FileUtils {
     }
     return filepath;
   }
+
+  // cleanup and delete file
+  static deleteFile(filepath) {
+    fs.unlinkSync(filepath);
+  }
 }
 
 module.exports = FileUtils;

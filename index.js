@@ -12,8 +12,7 @@ const CMD_OPTIONS = {
 
 // imports
 const spawn = require('child_process').spawn;
-
-// Command line usage
+// Command line config
 const argv = require('yargs')
     .usage('Usage: bert [options]')
     .options(CMD_OPTIONS)
@@ -31,9 +30,12 @@ function main() {
 
   // start `script`
   // we won't intercept the output to avoid causing user disruption
-  spawn('script', ['-q', '-F', logPath], { stdio: 'inherit' });
+  let script = spawn('script', ['-q', '-F', logPath], { stdio: 'inherit' });
 
-  // TODO: wait for `script` exit and clean up log file
+  // cleanup here
+  script.on('close', (code) => {
+    fileUtils.deleteFile(logPath);
+  });
 }
 
 if (require.main === module) {
