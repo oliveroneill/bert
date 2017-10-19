@@ -2,7 +2,7 @@ const assert = require('assert');
 const sinon = require("sinon");
 const rewire = require("rewire");
 
-var FileWatcher = rewire("../file-watcher.js");
+var FileWatcher = rewire("../lib/file-watcher.js");
 
 describe('FileWatcher', function() {
   var file = "logname.log";

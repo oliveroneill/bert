@@ -19,8 +19,8 @@ const argv = require('yargs')
     .help('h')
     .argv
 
-const fileUtils = require('./file-utils');
-const FileWatcher = require('./file-watcher');
+const fileUtils = require('./lib/file-utils');
+const FileWatcher = require('./lib/file-watcher');
 
 function main() {
   console.log("Starting bert. Type 'exit' when you're done.");
