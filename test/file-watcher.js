@@ -27,14 +27,13 @@ describe('FileWatcher', function() {
     FileWatcher.__set__("Tail", tailClassMock);
   });
 
-  describe('watch', function() {
+  describe('constructor', function() {
     it('should watch the correct parent directory of input file', function() {
       // given
       let dir = "home/user1/Documents/test/logdir";
       file = dir + "/logname.log";
       // when
-      let fileWatcher = new FileWatcher();
-      fileWatcher.watch(file);
+      let fileWatcher = new FileWatcher(file);
       // then
       sinon.assert.calledWith(chokidarMock.watch, dir);
     });
@@ -42,8 +41,7 @@ describe('FileWatcher', function() {
     it('should watch the current directory if the input file is only a filename', function() {
       file = "logname.log";
       // when
-      let fileWatcher = new FileWatcher();
-      fileWatcher.watch(file);
+      let fileWatcher = new FileWatcher(file);
       // then
       let expected = ".";
       sinon.assert.calledWith(chokidarMock.watch, expected);
@@ -51,8 +49,7 @@ describe('FileWatcher', function() {
 
     it('should watch directory changes until the file is created', function() {
       // when
-      let fileWatcher = new FileWatcher();
-      fileWatcher.watch(file);
+      let fileWatcher = new FileWatcher(file);
       // then
       // ensure that we wait for added file
       sinon.assert.calledWith(chokidarWatcherMock.on, "add", sinon.match.any);
@@ -62,8 +59,7 @@ describe('FileWatcher', function() {
 
     it('should watch directory changes and ignore other file changes', function() {
       // when
-      let fileWatcher = new FileWatcher();
-      fileWatcher.watch(file);
+      let fileWatcher = new FileWatcher(file);
       // ensure that we're watching for added files
       sinon.assert.calledWith(chokidarWatcherMock.on, "add", sinon.match.any);
       // create add event for new file, the second argument is the callback
@@ -79,8 +75,7 @@ describe('FileWatcher', function() {
 
     it('should watch file when created', function() {
       // when
-      let fileWatcher = new FileWatcher();
-      fileWatcher.watch(file);
+      let fileWatcher = new FileWatcher(file);
       // ensure that we're watching for added files
       sinon.assert.calledWith(chokidarWatcherMock.on, "add", sinon.match.any);
       // create add event for new file, the second argument is the callback
@@ -92,14 +87,26 @@ describe('FileWatcher', function() {
       sinon.assert.called(chokidarWatcherMock.close);
       // ensure that tail is used now for line changes
       sinon.assert.calledWith(tailMock.on, "line", sinon.match.any);
+      sinon.assert.calledWith(tailMock.on, "error", sinon.match.any);
     });
 
-    it('should watch file changes and use callback to send new lines', function() {
+    it('should not wait for file creation when specified', function() {
+      // when
+      let fileWatcher = new FileWatcher(file, true);
+      // ensure that we're watching for added files
+      sinon.assert.notCalled(chokidarWatcherMock.on);
+      // then
+      // ensure that tail is used now for line changes
+      sinon.assert.calledWith(tailMock.on, "line", sinon.match.any);
+    });
+
+    it('should watch file changes and emit events to send new lines', function() {
+      // given
       var expected = "This is a test line"
       let newLineCallback = sinon.stub();
       // when
-      let fileWatcher = new FileWatcher();
-      fileWatcher.watch(file, newLineCallback);
+      let fileWatcher = new FileWatcher(file);
+      fileWatcher.on('line', newLineCallback);
       // ensure that we're watching for added files
       sinon.assert.calledWith(chokidarWatcherMock.on, "add", sinon.match.any);
       // create add event for new file, the second argument is the callback
@@ -121,13 +128,42 @@ describe('FileWatcher', function() {
       lineCallback(expected);
       sinon.assert.calledWith(newLineCallback, expected);
     });
+
+    it('should emit error events from chokidar', function() {
+      // given
+      let expected = "Error message: Something went wrong";
+      let errorCallback = sinon.stub();
+      // when
+      let fileWatcher = new FileWatcher(file);
+      fileWatcher.on('error', errorCallback);
+      // ensure that we're watching for added files
+      sinon.assert.calledWith(chokidarWatcherMock.on, "error", sinon.match.any);
+      let cb = chokidarWatcherMock.on.getCall(1).args[1];
+      cb(expected);
+      // then
+      sinon.assert.calledWith(errorCallback, expected);
+    });
+
+    it('should emit error events from tail', function() {
+      // given
+      let expected = "Error message: Something went wrong";
+      let errorCallback = sinon.stub();
+      // when
+      let fileWatcher = new FileWatcher(file, true);
+      fileWatcher.on('error', errorCallback);
+      // ensure that we're watching for added files
+      sinon.assert.calledWith(tailMock.on, "error", sinon.match.any);
+      let cb = tailMock.on.getCall(1).args[1];
+      cb(expected);
+      // then
+      sinon.assert.calledWith(errorCallback, expected);
+    });
   });
 
   describe('cleanup', function() {
     it('should cleanup watchers', function() {
       // when
-      let fileWatcher = new FileWatcher();
-      fileWatcher.watch(file);
+      let fileWatcher = new FileWatcher(file);
       sinon.assert.calledWith(chokidarWatcherMock.on, "add", sinon.match.any);
       // create add event for new file, the second argument is the callback
       // that should be called on new file creation
@@ -141,8 +177,7 @@ describe('FileWatcher', function() {
 
     it('should cleanup directory watcher even if file isnt created yet', function() {
       // when
-      let fileWatcher = new FileWatcher();
-      fileWatcher.watch(file);
+      let fileWatcher = new FileWatcher(file);
       sinon.assert.calledWith(chokidarWatcherMock.on, "add", sinon.match.any);
       fileWatcher.cleanup();
       // then

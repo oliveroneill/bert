@@ -17,7 +17,7 @@ const argv = require('yargs')
     .usage('Usage: bert [options]')
     .options(CMD_OPTIONS)
     .help('h')
-    .argv
+    .argv;
 
 const fileUtils = require('./lib/file-utils');
 const FileWatcher = require('./lib/file-watcher');
@@ -28,19 +28,32 @@ function main() {
   let logDir = fileUtils.resolveHome(argv.dir);
   let logPath = fileUtils.generateNewLogFile(logDir);
 
-  let watcher = new FileWatcher();
-  watcher.watch(logPath, function(line) {
+  let watcher = new FileWatcher(logPath);
+  watcher.on('line', (line) => {
     // TODO: parse line here
+  });
+
+  // script will be null until it's started
+  var script = null;
+  // create cleanup function for errors and on close
+  function cleanup() {
+    script.kill();
+    watcher.cleanup();
+    fileUtils.deleteFile(logPath);
+  }
+
+  watcher.on('error', (e) => {
+    console.error(e);
+    cleanup();
   });
 
   // start `script`
   // we won't intercept the output to avoid causing user disruption
-  let script = spawn('script', ['-q', '-F', logPath], { stdio: 'inherit' });
+  script = spawn('script', ['-q', '-F', logPath], { stdio: 'inherit' });
 
   // cleanup here
   script.on('close', (code) => {
-    watcher.cleanup();
-    fileUtils.deleteFile(logPath);
+    cleanup();
   });
 }
 
