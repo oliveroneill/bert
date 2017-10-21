@@ -37,7 +37,9 @@ function main() {
   var script = null;
   // create cleanup function for errors and on close
   function cleanup() {
-    script.kill();
+    if (script !== null) {
+      script.kill();
+    }
     watcher.cleanup();
     fileUtils.deleteFile(logPath);
   }
@@ -47,10 +49,14 @@ function main() {
     cleanup();
   });
 
+  // TODO: this is a temporary fix for this
+  // issue: https://github.com/nodejs/node/issues/12101
+  process.stdin.setRawMode(true);
+  process.stdin.setRawMode(false);
+
   // start `script`
   // we won't intercept the output to avoid causing user disruption
   script = spawn('script', ['-q', '-F', logPath], { stdio: 'inherit' });
-
   // cleanup here
   script.on('close', (code) => {
     cleanup();
