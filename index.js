@@ -45,7 +45,7 @@ function main() {
   }
 
   watcher.on('error', (e) => {
-    console.error(e);
+    console.error("ERROR:", e);
     cleanup();
   });
 
