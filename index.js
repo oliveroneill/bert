@@ -21,6 +21,7 @@ const argv = require('yargs')
 
 const fileUtils = require('./lib/file-utils');
 const FileWatcher = require('./lib/file-watcher');
+const ErrorParser = require('./lib/error-parser');
 
 function main() {
   console.log("Starting bert. Type 'exit' when you're done.");
@@ -28,9 +29,12 @@ function main() {
   let logDir = fileUtils.resolveHome(argv.dir);
   let logPath = fileUtils.generateNewLogFile(logDir);
 
+  let parser = new ErrorParser();
   let watcher = new FileWatcher(logPath);
   watcher.on('line', (line) => {
-    // TODO: parse line here
+    if (parser.parse(line)) {
+      // TODO: search for useful results and notify
+    }
   });
 
   // script will be null until it's started
