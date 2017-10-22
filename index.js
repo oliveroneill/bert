@@ -42,7 +42,7 @@ function main() {
         title: 'Bert found an error',
         message: parsedError,
         wait: true,
-        open:url
+        open: url
       });
     }
   });
