@@ -8,10 +8,16 @@ var ErrorParser = require("../lib/error-parser.js");
  */
 describe('ErrorParser', function() {
   describe('parse', function() {
+    let parser = new ErrorParser();
+    let username = 'test-username';
+    beforeEach(function() {
+      // the parser expects the first line to be an input line
+      parser.parse(`${username}$`);
+    });
+
     it('should flag errors correctly', function() {
       // given
       let message = "ERROR: x is undefined";
-      let parser = new ErrorParser();
       // when
       let result = parser.parse(message);
       // then
@@ -22,7 +28,6 @@ describe('ErrorParser', function() {
     it('should flag a real stacktrace correctly', function() {
       // given
       let message = "2015-05-29T09:35:09.793Z - error: [api] TypeError: Cannot call method 'logger' of undefined stack=TypeError: Cannot call method 'logger' of undefined";
-      let parser = new ErrorParser();
       // when
       let result = parser.parse(message);
       // then
@@ -30,31 +35,48 @@ describe('ErrorParser', function() {
       assert.equal(result, expected);
     });
 
+    it('should flag errors when they start with a different username', function() {
+      // given
+      let message = "username2$ error";
+      // when
+      let result = parser.parse(message);
+      // then
+      assert.equal(result, message);
+    });
+
     it('should not flag empty lines', function() {
       // given
       let message = "";
-      let parser = new ErrorParser();
       // when
       let result = parser.parse(message);
       // then
       assert.equal(result, null);
     });
 
-    it('should ignore input lines', function() {
+    it('should not flag input lines', function() {
       // given
-      let message = "username-1$ ls";
-      let parser = new ErrorParser();
+      let message = `${username}$ ls`;
       // when
       let result = parser.parse(message);
       // then
       assert.equal(result, null);
     });
 
-    it('should ignore input lines even if they contain the word error', function() {
+    it('should not flag input lines even if they contain the word error', function() {
       // given
-      let message = "username-1$ input line with the word error";
-      let parser = new ErrorParser();
+      let message = `${username}$ input line with the word error`;
       // when
+      let result = parser.parse(message);
+      // then
+      assert.equal(result, null);
+    });
+
+    it('should not flag input lines where the username has error in it', function() {
+      // given
+      let message = "error-username$ input line";
+      parser = new ErrorParser();
+      // when
+      parser.parse('error-username$');
       let result = parser.parse(message);
       // then
       assert.equal(result, null);
@@ -66,7 +88,6 @@ describe('ErrorParser', function() {
 
           \r\n
       `;
-      let parser = new ErrorParser();
       // when
       let result = parser.parse(message);
       // then
@@ -76,7 +97,6 @@ describe('ErrorParser', function() {
     it('should not flag general output', function() {
       // given
       let message = "Normal output with nothing weird about it";
-      let parser = new ErrorParser();
       // when
       let result = parser.parse(message);
       // then
