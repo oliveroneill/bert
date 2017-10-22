@@ -18,23 +18,32 @@ const argv = require('yargs')
     .options(CMD_OPTIONS)
     .help('h')
     .argv;
+const notifier = require('node-notifier');
 
-const fileUtils = require('./lib/file-utils');
+const FileUtils = require('./lib/file-utils');
 const FileWatcher = require('./lib/file-watcher');
 const ErrorParser = require('./lib/error-parser');
+const StackOverflowSearcher = require('./lib/stack-overflow-searcher');
 
 function main() {
   console.log("Starting bert. Type 'exit' when you're done.");
 
-  let logDir = fileUtils.resolveHome(argv.dir);
-  let logPath = fileUtils.generateNewLogFile(logDir);
+  let logDir = FileUtils.resolveHome(argv.dir);
+  let logPath = FileUtils.generateNewLogFile(logDir);
 
   let parser = new ErrorParser();
+  let searcher = new StackOverflowSearcher();
   let watcher = new FileWatcher(logPath);
   watcher.on('line', (line) => {
     let parsedError = parser.parse(line);
     if (parsedError !== null) {
-      // TODO: search for useful results and notify
+      let url = searcher.getUrlForRelevantAnswer(parsedError);
+      notifier.notify({
+        title: 'Bert found an error',
+        message: parsedError,
+        wait: true,
+        open:url
+      });
     }
   });
 
@@ -46,7 +55,7 @@ function main() {
       script.kill();
     }
     watcher.cleanup();
-    fileUtils.deleteFile(logPath);
+    FileUtils.deleteFile(logPath);
   }
 
   watcher.on('error', (e) => {
