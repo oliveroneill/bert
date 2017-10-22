@@ -15,8 +15,7 @@ describe('ErrorParser', function() {
       // when
       let result = parser.parse(message);
       // then
-      // The parser does not clear out extra space
-      let expected = "ERROR:  is undefined";
+      let expected = "ERROR: is undefined";
       assert.equal(result, expected);
     });
 
@@ -48,8 +47,7 @@ describe('ErrorParser', function() {
       // when
       let result = parser.parse(message);
       // then
-      // The parser does not clear out extra space
-      let expected = "ERROR:  is undefined";
+      let expected = "ERROR: is undefined";
       assert.equal(result, expected);
     });
 
