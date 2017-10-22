@@ -11,7 +11,7 @@ describe('ErrorParser', function() {
       // when
       let result = parser.parse(message);
       // then
-      assert(result);
+      assert.equal(result, message);
     });
 
     it('should flag exited status code correctly', function() {
@@ -21,7 +21,7 @@ describe('ErrorParser', function() {
       // when
       let result = parser.parse(message);
       // then
-      assert(result);
+      assert.equal(result, message);
     });
 
     it('should flag a real stacktrace correctly', function() {
@@ -35,7 +35,7 @@ describe('ErrorParser', function() {
       // when
       let result = parser.parse(message);
       // then
-      assert(result);
+      assert.equal(result, message);
     });
 
     it('should not flag empty lines', function() {
@@ -45,7 +45,7 @@ describe('ErrorParser', function() {
       // when
       let result = parser.parse(message);
       // then
-      assert(!result);
+      assert.equal(result, null);
     });
 
     it('should not flag white space', function() {
@@ -58,7 +58,7 @@ describe('ErrorParser', function() {
       // when
       let result = parser.parse(message);
       // then
-      assert(!result);
+      assert.equal(result, null);
     });
 
     it('should not flag general output', function() {
@@ -68,7 +68,7 @@ describe('ErrorParser', function() {
       // when
       let result = parser.parse(message);
       // then
-      assert(!result);
+      assert.equal(result, null);
     });
 
   });

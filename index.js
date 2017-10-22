@@ -32,7 +32,8 @@ function main() {
   let parser = new ErrorParser();
   let watcher = new FileWatcher(logPath);
   watcher.on('line', (line) => {
-    if (parser.parse(line)) {
+    let parsedError = parser.parse(line);
+    if (parsedError !== null) {
       // TODO: search for useful results and notify
     }
   });
