@@ -26,7 +26,7 @@ describe('ErrorParser', function() {
       // when
       let result = parser.parse(message);
       // then
-      let expected = "2015-05-29T09:35:09.793Z - error: [api] TypeError: Cannot call method '' of undefined stack=TypeError: Cannot call method '' of undefined";
+      let expected = "2015-05-29T09:35:09.793Z - error: [api] TypeError: Cannot call method of undefined stack=TypeError: Cannot call method of undefined";
       assert.equal(result, expected);
     });
 
