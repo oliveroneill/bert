@@ -40,20 +40,19 @@ describe('ErrorParser', function() {
       assert.equal(result, null);
     });
 
-    it('should remove username from front of line', function() {
+    it('should ignore input lines', function() {
       // given
-      let message = "username-1$ ERROR: x is undefined";
+      let message = "username-1$ ls";
       let parser = new ErrorParser();
       // when
       let result = parser.parse(message);
       // then
-      let expected = "ERROR: is undefined";
-      assert.equal(result, expected);
+      assert.equal(result, null);
     });
 
-    it('should remove username even if it contains the word error', function() {
+    it('should ignore input lines even if they contain the word error', function() {
       // given
-      let message = "error name-1$ normal line";
+      let message = "username-1$ input line with the word error";
       let parser = new ErrorParser();
       // when
       let result = parser.parse(message);
