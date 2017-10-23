@@ -112,6 +112,20 @@ describe('ErrorParser', function() {
       assert.equal(result, expected);
     });
 
+    it('should remove file paths from errors', function() {
+      // given
+      let message = "PHP Parse error:  syntax error, unexpected ';' in /Users/tallytarik/work/bert/test.php on line 1";
+      // when
+      let result = parser.parse(message);
+      // then
+      // TODO: this expected error message format would be ideal for searching, but also goes beyond the scope of /just/ removing the file path
+      // Either of the following two would be acceptable
+      let expected = "PHP Parse error:  syntax error, unexpected ';'";
+      // OR:
+      // let expected = "PHP Parse error:  syntax error, unexpected ';' in  on line 1";
+      assert.equal(result, expected);
+    });
+
     it('should not flag white space', function() {
       // given
       let message = `      
