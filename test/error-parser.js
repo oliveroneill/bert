@@ -55,7 +55,7 @@ describe('ErrorParser', function() {
 
     it('should not flag input lines', function() {
       // given
-      let message = `${username}$ ls`;
+      let message = `${username}$ test_command`;
       // when
       let result = parser.parse(message);
       // then
@@ -80,6 +80,36 @@ describe('ErrorParser', function() {
       let result = parser.parse(message);
       // then
       assert.equal(result, null);
+    });
+
+    it('should not flag error output when an input line contained a blacklisted command', function() {
+      // given
+      let message = `${username}$ ls -la`;
+      parser = new ErrorParser();
+      // when
+      let result = parser.parse(message);
+      assert.equal(result, null);
+      result = parser.parse('-rw-r--r--    1 username  groupname      0 23 Oct 00:00 error.txt');
+      // then
+      assert.equal(result, null);
+    });
+
+    it('should resume flagging error output after a blacklisted command when a new input is received', function() {
+      // send blacklisted input - we don't care about the result, this has already been tested
+      let message = `${username}$ ls -la`;
+      let result = parser.parse(message);
+      // check error output while blacklisted command is running
+      message = '-rw-r--r--    1 username  groupname      0 23 Oct 00:00 error.txt'
+      result = parser.parse(message);
+      assert.equal(result, null);
+      // send non-blacklisted input - we don't care about the result, this has already been tested
+      message = `${username}$ some_other_command`;
+      result = parser.parse(message);
+      // ensure error output is now tracked again
+      message = "ERROR";
+      result = parser.parse(message);
+      let expected = "ERROR";
+      assert.equal(result, expected);
     });
 
     it('should not flag white space', function() {
