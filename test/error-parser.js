@@ -118,11 +118,17 @@ describe('ErrorParser', function() {
       // when
       let result = parser.parse(message);
       // then
-      // TODO: this expected error message format would be ideal for searching, but also goes beyond the scope of /just/ removing the file path
-      // Either of the following two would be acceptable
-      let expected = "PHP Parse error:  syntax error, unexpected ';'";
-      // OR:
-      // let expected = "PHP Parse error:  syntax error, unexpected ';' in  on line 1";
+      let expected = "PHP Parse error: syntax error, unexpected ';'";
+      assert.equal(result, expected);
+    });
+
+    it('should keep the error message name', function() {
+      // given
+      let message = "Index out of range error: index i is 3 when length is 1";
+      // when
+      let result = parser.parse(message);
+      // then
+      let expected = "Index out of range error: index is 3 when is 1";
       assert.equal(result, expected);
     });
 
