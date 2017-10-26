@@ -23,7 +23,7 @@
     "chokidar": "1.7.0",
     "node-notifier": "5.1.2",
     "pos": "0.4.2",
-    "tail": "1.2.2",
+    "tail": "1.2.3",
     "yargs": "9.0.1"
   },
   "devDependencies": {
