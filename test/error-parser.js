@@ -137,7 +137,7 @@ describe('ErrorParser', function() {
       ];
       let expectedErrorIndex = 4;
       // TODO: remove file path from this
-      let expected = "npm ERR! enoent ENOENT: no such file or directory, open '/Users/oliveroneill04/git/package.json'";
+      let expected = "npm ERR! enoent ENOENT: no such file or directory, open";
       // then
       for (var i = 0; i < messages.length; i++) {
         let result = parser.parse(messages[i]);
@@ -147,6 +147,15 @@ describe('ErrorParser', function() {
         }
         assert.equal(result, null);
       }
+    });
+
+    it('should remove file paths from error message', function() {
+      //given
+      let message = "Error: no such file or directory, open '/Users/oliveroneill04/git/error-parser.js'";
+      // when
+      let result = parser.parse(message);
+      // then
+      assert.equal(result, "Error: no such file or directory, open");
     });
 
     it('should keep the error message name', function() {
@@ -180,5 +189,13 @@ describe('ErrorParser', function() {
       assert.equal(result, null);
     });
 
+    it('should remove file paths from error message', function() {
+      //given
+      let message = "Opening '/Users/oliveroneill04/git/error-parser.js'";
+      // when
+      let result = parser.parse(message);
+      // then
+      assert.equal(result, null);
+    });
   });
 });
