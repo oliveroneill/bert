@@ -122,6 +122,33 @@ describe('ErrorParser', function() {
       assert.equal(result, expected);
     });
 
+    it('should pick out error message from multi-line error', function() {
+      // given
+      let messages = [
+        "npm ERR! path /Users/oliveroneill04/git/package.json",
+        "npm ERR! code ENOENT",
+        "npm ERR! errno -2",
+        "npm ERR! syscall open",
+        "npm ERR! enoent ENOENT: no such file or directory, open '/Users/oliveroneill04/git/package.json'",
+        "npm ERR! enoent This is related to npm not being able to find a file.",
+        "npm ERR! enoent",
+        "npm ERR! A complete log of this run can be found in:",
+        "npm ERR!     /Users/oliveroneill04/.npm/_logs/2017-10-27T07_37_44_067Z-debug.log"
+      ];
+      let expectedErrorIndex = 4;
+      // TODO: remove file path from this
+      let expected = "npm ERR! enoent ENOENT: no such file or directory, open '/Users/oliveroneill04/git/package.json'";
+      // then
+      for (var i = 0; i < messages.length; i++) {
+        let result = parser.parse(messages[i]);
+        if (i === expectedErrorIndex) {
+          assert.equal(result, expected);
+          continue;
+        }
+        assert.equal(result, null);
+      }
+    });
+
     it('should keep the error message name', function() {
       // given
       let message = "Index out of range error: index i is 3 when length is 1";
