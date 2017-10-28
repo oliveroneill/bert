@@ -44,6 +44,16 @@ describe('ErrorParser', function() {
       assert.equal(result, message);
     });
 
+    it('should flag errors from golang correctly', function() {
+      // given
+      let message = "tripwatcher/main.go:57:25: undefined: config.LodadConf";
+      // when
+      let result = parser.parse(message);
+      // then
+      let expected = "undefined:";
+      assert.equal(result, expected);
+    });
+
     it('should not flag empty lines', function() {
       // given
       let message = "";
