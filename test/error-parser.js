@@ -37,7 +37,7 @@ describe('ErrorParser', function() {
 
     it('should flag errors when they start with a different username', function() {
       // given
-      let message = "username2$ error";
+      let message = "username2$ error: is not defined";
       // when
       let result = parser.parse(message);
       // then
@@ -106,9 +106,9 @@ describe('ErrorParser', function() {
       message = `${username}$ some_other_command`;
       result = parser.parse(message);
       // ensure error output is now tracked again
-      message = "ERROR";
+      message = "ERROR: x is not defined";
       result = parser.parse(message);
-      let expected = "ERROR";
+      let expected = "ERROR: is not defined";
       assert.equal(result, expected);
     });
 
@@ -192,6 +192,15 @@ describe('ErrorParser', function() {
     it('should remove file paths from error message', function() {
       //given
       let message = "Opening '/Users/oliveroneill04/git/error-parser.js'";
+      // when
+      let result = parser.parse(message);
+      // then
+      assert.equal(result, null);
+    });
+
+    it('should not flag output lines that just have the word error in them', function() {
+      // given
+      let message = "should not flag input lines even if they contain the word error in them";
       // when
       let result = parser.parse(message);
       // then
