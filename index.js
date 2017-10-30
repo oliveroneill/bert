@@ -27,7 +27,6 @@ const StackOverflowSearcher = require('./lib/stack-overflow-searcher');
 
 function main() {
   console.log("Starting bert. Type 'exit' when you're done.");
-
   let logDir = FileUtils.resolveHome(argv.dir);
   let logPath = FileUtils.generateNewLogFile(logDir);
 
@@ -41,7 +40,6 @@ function main() {
       notifier.notify({
         title: 'Bert found an error',
         message: parsedError,
-        wait: true,
         open: url
       });
     }
@@ -56,6 +54,7 @@ function main() {
     }
     watcher.cleanup();
     FileUtils.deleteFile(logPath);
+    notifier.clearAll();
   }
 
   watcher.on('error', (e) => {
