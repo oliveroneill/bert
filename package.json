@@ -21,7 +21,6 @@
   "homepage": "https://github.com/oliveroneill/bert#readme",
   "dependencies": {
     "chokidar": "1.7.0",
-    // TODO: move to npm package once merged
     "node-notifier": "github:oliveroneill/node-notifier#cancel_notifications",
     "pos": "0.4.2",
     "tail": "1.2.3",
