@@ -21,7 +21,7 @@ describe('ErrorParser', function() {
       // when
       let result = parser.parse(message);
       // then
-      let expected = "ERROR: is undefined";
+      let expected = "error: is undefined";
       assert.equal(result, expected);
     });
 
@@ -31,7 +31,7 @@ describe('ErrorParser', function() {
       // when
       let result = parser.parse(message);
       // then
-      let expected = "2015-05-29T09:35:09.793Z - error: [api] TypeError: Cannot call method of undefined stack=TypeError: Cannot call method of undefined";
+      let expected = "2015-05-29t09:35:09.793z - error: [api] typeerror: cannot call method of undefined stack=typeerror: cannot call method of undefined";
       assert.equal(result, expected);
     });
 
@@ -118,7 +118,7 @@ describe('ErrorParser', function() {
       // ensure error output is now tracked again
       message = "ERROR: x is not defined";
       result = parser.parse(message);
-      let expected = "ERROR: is not defined";
+      let expected = "error: is not defined";
       assert.equal(result, expected);
     });
 
@@ -128,7 +128,7 @@ describe('ErrorParser', function() {
       // when
       let result = parser.parse(message);
       // then
-      let expected = "PHP Parse error: syntax error, unexpected ';'";
+      let expected = "php parse error: syntax error, unexpected ';'";
       assert.equal(result, expected);
     });
 
@@ -147,7 +147,7 @@ describe('ErrorParser', function() {
       ];
       let expectedErrorIndex = 4;
       // TODO: remove file path from this
-      let expected = "npm ERR! enoent ENOENT: no such file or directory, open";
+      let expected = "npm err! enoent enoent: no such file or directory, open";
       // then
       for (var i = 0; i < messages.length; i++) {
         let result = parser.parse(messages[i]);
@@ -165,7 +165,7 @@ describe('ErrorParser', function() {
       // when
       let result = parser.parse(message);
       // then
-      assert.equal(result, "Error: no such file or directory, open");
+      assert.equal(result, "error: no such file or directory, open");
     });
 
     it('should keep the error message name', function() {
@@ -174,7 +174,7 @@ describe('ErrorParser', function() {
       // when
       let result = parser.parse(message);
       // then
-      let expected = "Index out of range error: index is 3 when is 1";
+      let expected = "index out of range error: index is 3 when is 1";
       assert.equal(result, expected);
     });
 
