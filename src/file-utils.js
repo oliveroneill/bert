@@ -4,7 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 
-function createDirectory(dir) {
+function createDirectory(dir: string) {
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir);
   }
@@ -12,7 +12,7 @@ function createDirectory(dir) {
 
 class FileUtils {
   // generate new log to avoid name conflicts
-  static generateNewLogFile(dir) {
+  static generateNewLogFile(dir: string): string {
     // ensure it ends with a trailing slash
     if (!dir.endsWith("/")) dir += "/";
     // create the log directory if it doesn't already exist
@@ -27,7 +27,7 @@ class FileUtils {
   }
 
   // resolve ~ as the user's home directory
-  static resolveHome(filePath) {
+  static resolveHome(filePath: string): string {
     if (filePath[0] === '~') {
       return path.join(process.env.HOME, filePath.slice(1));
     }
@@ -35,13 +35,13 @@ class FileUtils {
   }
 
   // cleanup and delete file
-  static deleteFile(filePath) {
+  static deleteFile(filePath: string) {
     if (!fs.existsSync(filePath)) return;
     fs.unlinkSync(filePath);
   }
 
   // returns path to parent directory
-  static getContainingDirectory(filePath) {
+  static getContainingDirectory(filePath: string): string {
     return path.dirname(filePath);
   }
 }

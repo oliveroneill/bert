@@ -19,14 +19,17 @@ const NOUNS_TO_KEEP = [
  * using POS tagging
  */
 class VariableNameFilter {
+  // phrases to search for
+  errorPhrases: string[];
+
   /**
    * @param errorPhrases the phrases that identify error
    */
-  constructor(errorPhrases) {
+  constructor(errorPhrases: string[]) {
     this.errorPhrases = errorPhrases;
   }
 
-  filter(errorMessage) {
+  filter(errorMessage: string): string {
     // Use POS tagging to find nouns which should equate to variable
     // or file names
     var words = new pos.Lexer().lex(errorMessage);
@@ -55,7 +58,7 @@ class VariableNameFilter {
    * Will return true if the phrase contains any words or phrases that
    * we expected to be useful in the message
    */
-  isWhiteListed(word) {
+  isWhiteListed(word: string): bool {
     word = word.toLowerCase();
     for (var i in this.errorPhrases) {
       if (word.indexOf(this.errorPhrases[i]) > -1) return true;

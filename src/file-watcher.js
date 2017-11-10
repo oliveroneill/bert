@@ -1,4 +1,5 @@
 "use strict";
+// @flow
 
 // imports - these cannot be constants due to being tested with rewire
 // see https://github.com/jhnns/rewire#limitations
@@ -9,12 +10,15 @@ const EventEmitter = require('events').EventEmitter
 const FileUtils = require('./file-utils');
 
 class FileWatcher extends EventEmitter {
+  _tail: ?Tail;
+  _path: string;
+  _watcher: chokidar.FSWatcher;
   /**
   * @param filePath - the file to watch
   * @param fileExists - whether the file exists. This determines whether
   * the watcher will wait for the file to be created or not
   */
-  constructor(filePath, fileExists=false) {
+  constructor(filePath: string, fileExists:bool=false) {
     super();
     this._path = filePath;
     // tail will be set when the file is created
@@ -42,14 +46,16 @@ class FileWatcher extends EventEmitter {
     })
   }
 
-  _watchLineChanges(path) {
+  _watchLineChanges(path: string) {
     // watch for new lines in the file
     this._tail = new Tail(path);
-    // TODO: this crashes when file is deleted while bert is running
     this._tail.on("line", (data) => {
       // notify each line change
       this.emit('line', data);
     });
+    // This is ugly but seems to be the only way
+    // to get Flow to stop complaining
+    if (this._tail == null) return;
     this._tail.on('error', (e) => {
       this.emit('error', e);
     });
@@ -58,7 +64,7 @@ class FileWatcher extends EventEmitter {
   cleanup() {
     // this can be called multiple times with no effect
     this._watcher.close();
-    if (this._tail !== null) {
+    if (this._tail != null) {
       this._tail.unwatch();
     }
   }

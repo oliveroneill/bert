@@ -2,12 +2,15 @@
   "name": "bert",
   "version": "0.1.0",
   "description": "",
-  "main": "index.js",
+  "main": "lib/index.js",
   "bin": {
-    "bert": "./index.js"
+    "bert": "lib/index.js"
   },
   "scripts": {
-    "test": "mocha"
+    "build": "flow && babel src/ -d lib/",
+    "prepublish": "npm run build",
+    "test": "mocha",
+    "flow": "flow"
   },
   "repository": {
     "type": "git",
@@ -27,6 +30,9 @@
     "yargs": "9.0.1"
   },
   "devDependencies": {
+    "babel-cli": "6.26.0",
+    "babel-preset-flow": "6.23.0",
+    "flow-bin": "0.59.0",
     "mocha": "4.0.1",
     "rewire": "2.5.2",
     "sinon": "4.0.1"

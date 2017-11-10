@@ -10,8 +10,10 @@ const NPM_ERROR_MESSAGE_LINE_NUMBER = 4;
  * mutliple lines
  */
 class NpmErrorParser {
+  // keep track of the line we're up to
+  errorLine: number;
+
   constructor() {
-    // keep track of the line we're up to
     this.errorLine = 0;
   }
 
@@ -23,7 +25,7 @@ class NpmErrorParser {
    * @param message the line to check
    * @return true when it identifies an npm error line
    */
-  evaluate(message) {
+  evaluate(message: string): bool {
     let isNpmError = message.toLowerCase().startsWith(NPM_ERROR_PREFIX);
     // if this isn't an npm error then reset the line counter
     if (!isNpmError) this.reset();
@@ -39,7 +41,7 @@ class NpmErrorParser {
    * @return a parsed message or null if we don't have enough information
    * yet
    */
-  parse(message) {
+  parse(message: string): ?string {
     let errorMessage = null;
     if (this.errorLine == NPM_ERROR_MESSAGE_LINE_NUMBER) {
       errorMessage = message;

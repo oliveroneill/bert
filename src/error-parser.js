@@ -44,8 +44,11 @@ const PARSERS = [
  * determine the username and later input lines
  */
 class ErrorParser {
+  // Used to identify input lines from terminal output
+  _username: ?string;
+  _shouldParseOutput: bool;
+
   constructor() {
-    // Used to identify input lines from terminal output
     this._username = null;
 
     // Used to indicate whether or not we're watching input

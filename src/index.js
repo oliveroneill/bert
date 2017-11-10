@@ -20,10 +20,10 @@ const argv = require('yargs')
     .argv;
 const notifier = require('node-notifier');
 
-const FileUtils = require('./lib/file-utils');
-const FileWatcher = require('./lib/file-watcher');
-const ErrorParser = require('./lib/error-parser');
-const StackOverflowSearcher = require('./lib/stack-overflow-searcher');
+const FileUtils = require('./file-utils');
+const FileWatcher = require('./file-watcher');
+const ErrorParser = require('./error-parser');
+const StackOverflowSearcher = require('./stack-overflow-searcher');
 
 function main() {
   console.log("Starting bert. Type 'exit' when you're done.");

@@ -21,19 +21,19 @@ class ParsedError {
  * match a specific form
  */
 class GenericErrorParser extends VariableNameFilter {
-  evaluate(message) {
+  evaluate(message: string): bool {
     // will always return true, since it should search every line
     // that doesn't match specific error parsers
     return true;
   }
 
-  parse(message) {
+  parse(message: string): ?string {
     let error = this.findError(message);
     if (error === null) return null;
     return error.name + this.filter(error.message);
   }
 
-  findError(message) {
+  findError(message: string): ?string {
     if (message.length == 0) return null;
     // split on all punctuation
     let words = message.split(/[^\w\s]|_/g);
