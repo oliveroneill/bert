@@ -10,6 +10,21 @@ errors and will send you a notification with a link to the StackOverflow
 search results. We have plans to extend this functionality to deliver
 helpful answers and identify a large range of tests.
 
+## Install
+Currently the project is not available on `npm` yet, as its still in
+development and we'd like to wait until it can handle a greater
+spectrum of errors. See the [development section](#development) below for how
+to install manually.
+
+## Running
+Run in your terminal:
+```bash
+bert
+```
+This will then start your `bert` session and any errors that appear
+in your terminal will trigger `bert` to send you notifications which
+allow you to quickly find a solution.
+
 ## OS Support
 Currently only tested on MacOS. It should run fine on Linux. Unfortunately we
 are using `script` to watch terminal output and I don't believe this is
