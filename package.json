@@ -9,7 +9,7 @@
   "scripts": {
     "build": "flow && babel src/ -d lib/",
     "prepublish": "npm run build",
-    "test": "mocha",
+    "test": "flow && mocha",
     "flow": "flow"
   },
   "repository": {
