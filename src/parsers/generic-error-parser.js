@@ -1,6 +1,7 @@
 "use strict";
 
 const VariableNameFilter = require('./variable-name-filter.js');
+const ParsingUtils = require('./parsing-utils.js');
 
 /**
  * Deconstructed error. Broken up into error name
@@ -28,6 +29,8 @@ class GenericErrorParser extends VariableNameFilter {
   }
 
   parse(message: string): ?string {
+    // remove file paths to avoid false positives
+    message = ParsingUtils.removeFilePaths(message);
     let error = this.findError(message);
     if (error === null) return null;
     return error.name + this.filter(error.message);

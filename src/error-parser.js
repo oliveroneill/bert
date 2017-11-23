@@ -3,6 +3,7 @@
 const pos = require('pos');
 
 const GenericErrorParser = require('./parsers/generic-error-parser.js');
+const GoErrorParser = require('./parsers/go-error-parser.js');
 const NpmErrorParser = require('./parsers/npm-error-parser.js');
 
 // Comamnds that should not output errors
@@ -13,8 +14,6 @@ const BLACKLISTED_COMMANDS = [
 // Phrases that should be removed from error message
 const PHRASES_TO_REMOVE = [
   /in [a-zA-Z0-9_\.\/]+ on line \d/,
-  // golang file name and line number
-  /[a-zA-Z_\.\/]+:\d+:\d+: /,
   // timestamp format
   // TODO: need something more general
   /\d+\-\d+\-\d+\w+\d+\:\d+\:\d+\.\d+\w/
@@ -34,6 +33,7 @@ const KEYPHRASES = [
 // The order here is important. The generic parser should be at the bottom
 // and used if we cannot match specific errors
 const PARSERS = [
+  new GoErrorParser(),
   new NpmErrorParser(),
   new GenericErrorParser(KEYPHRASES)
 ];
@@ -70,8 +70,6 @@ class ErrorParser {
     // ignore if we're currently not tracking output because of a blacklisted command
     if (!this._shouldParseOutput) return null;
     str = this.preprocess(str);
-    // keep a copy of the string before lowercase, so we can keep the parsed
-    // string with its capitalisation
     var parsedString = str.toLowerCase();
     // run through each parser to find relevant error
     for (var i in PARSERS) {
@@ -90,10 +88,8 @@ class ErrorParser {
   }
 
   preprocess(msg) {
-    msg = this.removeUnnecessaryPhrases(msg);
-    // remove file paths to avoid false positives
-    msg = this.removeFilePaths(msg);
     msg = this.cleanupScriptOutput(msg);
+    msg = this.removeUnnecessaryPhrases(msg);
     return msg;
   }
 
@@ -153,12 +149,6 @@ class ErrorParser {
       let phrase = PHRASES_TO_REMOVE[i];
       message = message.replace(new RegExp(phrase,"i"), '');
     }
-    return message;
-  }
-
-  removeFilePaths(message) {
-    let regex = new RegExp(/(\/*[a-zA-Z0-9_.-]+\/)+[a-zA-Z0-9_.-]+\.[a-zA-Z0-9_.-]+/g);
-    message = message.replace(regex, '');
     return message;
   }
 

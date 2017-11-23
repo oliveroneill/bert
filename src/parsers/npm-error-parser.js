@@ -1,5 +1,7 @@
 "use strict";
 
+const ParsingUtils = require('./parsing-utils.js');
+
 const NPM_ERROR_PREFIX = "npm err!";
 // the useful error message seems to occur on the 5th line
 // (this value is zero indexed)
@@ -44,7 +46,7 @@ class NpmErrorParser {
   parse(message: string): ?string {
     let errorMessage = null;
     if (this.errorLine == NPM_ERROR_MESSAGE_LINE_NUMBER) {
-      errorMessage = message;
+      errorMessage = ParsingUtils.removeFilePaths(message);
     }
     this.errorLine += 1;
     return errorMessage;

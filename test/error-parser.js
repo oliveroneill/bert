@@ -54,6 +54,16 @@ describe('ErrorParser', function() {
       assert.equal(result, expected);
     });
 
+    it('should flag non-generic errors from golang', function() {
+      // given
+      let message = "api_test.go:10:12: string literal not terminated";
+      // when
+      let result = parser.parse(message);
+      // then
+      let expected = "string literal not terminated";
+      assert.equal(result, expected);
+    });
+
     it('should not flag empty lines', function() {
       // given
       let message = "";
