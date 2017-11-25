@@ -5,11 +5,15 @@ const ParsingUtils = require('./parsing-utils.js');
 const NPM_ERROR_PREFIX = "npm err!";
 // the useful error message seems to occur on the 5th line
 // (this value is zero indexed)
+// TODO: this is not always the error line number
 const NPM_ERROR_MESSAGE_LINE_NUMBER = 4;
 
 /**
  * Used to read NPM errors and identify the error message across
  * mutliple lines
+ *
+ * TODO: NPM errors are more complicated than this and won't
+ * always match the line number
  */
 class NpmErrorParser {
   // keep track of the line we're up to
