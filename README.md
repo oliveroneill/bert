@@ -10,6 +10,8 @@ errors and will send you a notification with a link to the StackOverflow
 search results. We have plans to extend this functionality to deliver
 helpful answers and identify a large range of tests.
 
+![Bert in action](images/demo.gif)
+
 ## Install
 Currently the project is not available on `npm` yet, as its still in
 development and we'd like to wait until it can handle a greater
