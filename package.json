@@ -23,18 +23,18 @@
   },
   "homepage": "https://github.com/oliveroneill/bert#readme",
   "dependencies": {
-    "chokidar": "1.7.0",
+    "chokidar": "2.0.0",
     "node-notifier": "github:oliveroneill/node-notifier#cancel_notifications",
     "pos": "0.4.2",
     "tail": "1.2.3",
-    "yargs": "9.0.1"
+    "yargs": "10.0.3"
   },
   "devDependencies": {
     "babel-cli": "6.26.0",
     "babel-preset-flow": "6.23.0",
-    "flow-bin": "0.59.0",
-    "mocha": "4.0.1",
-    "rewire": "2.5.2",
-    "sinon": "4.0.1"
+    "flow-bin": "0.63.1",
+    "mocha": "4.1.0",
+    "rewire": "3.0.2",
+    "sinon": "4.1.4"
   }
 }
