@@ -59,4 +59,4 @@ bert
 ## TODO
 - Add better search functionality so that Bert can give real recommendations
 - Windows compatibility
-- More error identifiers
+- More error identifiers. Consider looking at [VSCode problem matchers](https://code.visualstudio.com/updates/v1_11#_tasks)
