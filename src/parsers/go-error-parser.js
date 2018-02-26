@@ -2,7 +2,8 @@
 
 const VariableNameFilter = require('./variable-name-filter.js');
 
-const GO_ERROR_PREFIX = /[a-zA-Z_\.\/]+\.go:\d+:\d+: /
+// Taken from: https://github.com/Microsoft/vscode/blob/master/src/vs/workbench/parts/tasks/common/problemMatcher.ts
+const GO_ERROR_PREFIX = /^([^:]*: )?((.:)?[^:]*):(\d+)(:(\d+))?: (.*)$/
 
 /**
  * Used to read Go errors
@@ -28,7 +29,7 @@ class GoErrorParser extends VariableNameFilter {
    * @return cleaned output
    */
   parse(message: string): ?string {
-    message = message.replace(new RegExp(GO_ERROR_PREFIX), '');
+    message = GO_ERROR_PREFIX.exec(message)[7];
     return this.filter(message);
   }
 }
