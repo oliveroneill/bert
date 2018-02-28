@@ -60,3 +60,8 @@ bert
 - Add better search functionality so that Bert can give real recommendations
 - Windows compatibility
 - More error identifiers. Consider looking at [VSCode problem matchers](https://code.visualstudio.com/updates/v1_11#_tasks)
+    - To implement:
+        - Java: `^(.+\\.java):(\\d):(?:\\s+(error)):(?:\\s+(.*))$`, position 4
+        - Make: `^([^:]+):(\d+):(\d+): error: (.+)$`, position 4
+        - C: `?[\\/0-9a-zA-Z\\._]+):(?\\d+):(?\\d+):\\s+(?.+)`, position 4
+        - More [here](https://github.com/Microsoft/vscode/blob/master/src/vs/workbench/parts/tasks/common/problemMatcher.ts#L1086)
