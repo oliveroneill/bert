@@ -1,7 +1,5 @@
 # bert
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/oliveroneill/bert.svg)](https://greenkeeper.io/)
-
 [![Build Status](https://travis-ci.org/oliveroneill/bert.svg?branch=master)](https://travis-ci.org/oliveroneill/bert)
 
 Bert (Better Error Resolution in Terminals) is a program that will monitor your terminal output and send you
