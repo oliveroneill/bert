@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/oliveroneill/bert#readme",
   "dependencies": {
-    "chokidar": "2.0.2",
+    "chokidar": "2.0.4",
     "node-notifier": "github:oliveroneill/node-notifier#cancel_notifications",
     "pos": "0.4.2",
     "tail": "1.2.3",
